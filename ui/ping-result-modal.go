@@ -7,11 +7,9 @@ import (
 )
 
 func (w *PingResultModal) init () {
-    w.ConnectOpen(func () {
-        fmt.Println("open")
-    })
-
     tableRows := controller.LoadFormattedPings()
+
+    w.PingResultTable.SetRowCount(len(tableRows))
 
     for rowNum, columns := range tableRows {
         for colNum, cellData := range columns {
