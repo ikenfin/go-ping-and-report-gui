@@ -11,6 +11,9 @@ func (w *MainWindow) init () {
     w.enableControls()
     // Connect actions
     w.ActionExit.ConnectTriggered(func (bool) { w.Close(); })
+    w.ActionAbout.ConnectTriggered(func (bool) {
+        NewAboutModal(w).Show() 
+    })
 }
 
 func (w MainWindow) resetProgress () {
