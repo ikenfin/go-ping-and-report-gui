@@ -1,59 +1,57 @@
 package controller
 
 import (
-    "qt-test/state"
-    "fmt"
-    "os"
-    "time"
+	"fmt"
+	"os"
+	"qt-test/helpers"
+	"qt-test/state"
 )
 
 // returns data [ [ 'url', 'status', ... ], ... ]
 func LoadFormattedPings() [][]string {
-    pings := state.GetPingResults()
+	pings := state.GetPingResults()
 
-    var formattedPings [][]string
+	var formattedPings [][]string
 
-    for _, pingResult := range pings {
-        formattedPings = append(formattedPings, []string{
-            pingResult.Url,
-            fmt.Sprintf("%d", pingResult.StatusCode),
-            convertUnixToString(pingResult.SentAt),
-            convertUnixToString(pingResult.FinishedAt),
-        })
-    }
+	for _, pingResult := range pings {
+		formattedPings = append(formattedPings, []string{
+			pingResult.Url,
+			fmt.Sprintf("%d", pingResult.StatusCode),
+			helpers.ConvertUnixToString(pingResult.SentAt),
+			helpers.ConvertUnixToString(pingResult.FinishedAt),
+		})
+	}
 
-    return formattedPings
+	return formattedPings
 }
 
-func SavePingsToCSV (savePath string) {
-    f, err := os.Create(savePath)
+func SavePingsToCSV(savePath string) {
+	f, err := os.Create(savePath)
 
-    if err != nil {
-        f.Close()
-        panic("No file exists!")
-    }
+	if err != nil {
+		f.Close()
+		// todo: show message box!
+		panic("No file exists!")
+	}
 
-    // get current state
-    pings := state.GetPingResults()
-    // put headings
-    fmt.Fprintln(f, fmt.Sprintf("%s;%s;%s;%s;", "Url", "Http status", "Started at", "Finished at"))
+	// get current state
+	pings := state.GetPingResults()
 
-    // put p
-    for _, pingResult := range pings {
-        fmt.Fprintln(f, fmt.Sprintf("%s;%d;%s;%s;", pingResult.Url, pingResult.StatusCode, convertUnixToString(pingResult.SentAt), convertUnixToString(pingResult.FinishedAt)))
-    }
+	// put headings
+	fmt.Fprintln(f, fmt.Sprintf("%s;%s;%s;%s;", "Url", "Http status", "Started at", "Finished at"))
 
-    err = f.Close()
-    if err != nil {
-        panic("Not saved!")
-    }
-}
-/*
-func GetFormattedPingResults () {
-    pings := state.GetPingResults()
+	// put pings
+	for _, pingResult := range pings {
+		fmt.Fprintln(f, fmt.Sprintf(
+			"%s;%d;%s;%s;",
+			pingResult.Url,
+			pingResult.StatusCode,
+			helpers.ConvertUnixToString(pingResult.SentAt),
+			helpers.ConvertUnixToString(pingResult.FinishedAt)))
+	}
 
-}
-*/
-func convertUnixToString (timestamp int64) string {
-    return time.Unix(timestamp, 0).Format(time.RFC3339) 
+	err = f.Close()
+	if err != nil {
+		panic("Not saved!")
+	}
 }
