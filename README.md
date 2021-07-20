@@ -1,6 +1,6 @@
 # Go ping & report GUI
 
-Simple Golang program with GUI, based on @therecipe/qt binding.
+Simple Golang program with GUI, based on [@therecipe/qt](https://github.com/therecipe/qt) binding.
 
 UI created using QT Designer.
 
