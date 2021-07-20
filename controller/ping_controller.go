@@ -1,16 +1,16 @@
 package controller
 
 import (
-    "math"
     "qt-test/state"
     "qt-test/logic"
+    "qt-test/helpers"
 )
 
 
 // onProgress -> 0..100
 func PingUrlsByList (urls []string, onProgress chan int) {
     total := len(urls)
-    step := calculatePercentagePerUrl(total)
+    step := helpers.CalculatePercentPerItem(total)
 
     // initial
     onProgress <- 0
@@ -29,12 +29,12 @@ func PingUrlsByList (urls []string, onProgress chan int) {
     for {
         urlPingResult := <-onUrlPingComplete
 
-    state.StorePingResult(urlPingResult)
+        state.StorePingResult(urlPingResult)
 
         processedUrls++
 
         // notify parent thread
-        onProgress <- calculateProcessedPercentage(step, processedUrls)
+        onProgress <- helpers.CalculateProcessedPercentage(step, processedUrls)
 
         // seems we done
         if processedUrls >= total {
@@ -46,12 +46,4 @@ func PingUrlsByList (urls []string, onProgress chan int) {
 
 }
 
-// 1 url in percents
-func calculatePercentagePerUrl (totalUrls int) float64 {
-    return float64(100 / totalUrls)
-}
 
-// convert total pinged to percentage
-func calculateProcessedPercentage (step float64, total int) int {
-    return int(math.Round(step * float64(total)))
-}

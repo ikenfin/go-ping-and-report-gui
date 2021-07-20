@@ -22,11 +22,8 @@ func (w *PingResultModal) init () {
 }
 
 func (w *PingResultModal) ExportToCsv () {
-    fmt.Println("Export data")
-
     saveDialog := widgets.NewQFileDialog(w, core.Qt__Dialog)
     csvFileName := saveDialog.GetSaveFileName(nil, "Export to CSV", "pings.csv", "CSV files (*.csv *.tsv)", "", widgets.QFileDialog__ShowDirsOnly)
-
     saveDialog.Close()
 
     controller.SavePingsToCSV(csvFileName)

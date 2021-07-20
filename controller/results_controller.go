@@ -17,8 +17,8 @@ func LoadFormattedPings() [][]string {
 		formattedPings = append(formattedPings, []string{
 			pingResult.Url,
 			fmt.Sprintf("%d", pingResult.StatusCode),
-			helpers.ConvertUnixToString(pingResult.SentAt),
-			helpers.ConvertUnixToString(pingResult.FinishedAt),
+			helpers.FormatUnixToString(pingResult.SentAt),
+			helpers.FormatUnixToString(pingResult.FinishedAt),
 		})
 	}
 
@@ -46,8 +46,8 @@ func SavePingsToCSV(savePath string) {
 			"%s;%d;%s;%s;",
 			pingResult.Url,
 			pingResult.StatusCode,
-			helpers.ConvertUnixToString(pingResult.SentAt),
-			helpers.ConvertUnixToString(pingResult.FinishedAt)))
+			helpers.FormatUnixToString(pingResult.SentAt),
+			helpers.FormatUnixToString(pingResult.FinishedAt)))
 	}
 
 	err = f.Close()
