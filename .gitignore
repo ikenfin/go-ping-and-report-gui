@@ -1,0 +1,8 @@
+ui/uic_*
+*.swp
+deploy
+moc.*
+moc_moc*
+moc_cgo*
+
+*.csv
